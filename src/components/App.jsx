@@ -1,9 +1,16 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-function App() {
+import Main from './main'
+
+function App({ step }) {
   return (
-    <div>test</div>
+    <Main step={step} />
   );
 }
 
-export default App
+const mapStateToProps = ({ progress }) => ({
+	step: progress.toJS().step
+})
+
+export default connect(mapStateToProps)(App)
