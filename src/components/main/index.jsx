@@ -16,9 +16,6 @@ export default class Main extends React.Component {
 	constructor() {
 		super()
 		this.state = {
-			ch1: false,
-			ch2: false,
-			text: '',
 			inputError: null,
 			selectTitle: ''
 		}
@@ -31,10 +28,13 @@ export default class Main extends React.Component {
 			<Col className="container">
 				<Row>
 					<Col
-						md={4}
-						mdOffset={4}
+						md={6}
+						mdOffset={3}
 					>
-						<ProgressCustom step={this.props.step} />
+						<ProgressCustom
+							step={this.props.step}
+							setNextStep={this.props.setNextStep}
+						/>
 						<Row>
 							<Col xs={12}>
 								{this.props.step === 1 &&
@@ -55,12 +55,14 @@ export default class Main extends React.Component {
 									<InputCustom
 										checkInput={this.checkInput}
 										error={this.state.inputError}
+										text={this.props.form.text}
 									/>
 								}
 								{this.props.step === 4 &&
 									<DropdownCustom
 										changeValueInForm={this.props.changeValueInForm}
 										setNextStep={this.props.setNextStep}
+										selected={this.props.form.c}
 									/>
 								}
 								{this.props.step === 5 &&

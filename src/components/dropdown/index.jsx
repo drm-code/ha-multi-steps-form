@@ -5,10 +5,10 @@ import {
 } from 'react-bootstrap'
 
 class DropdownCustom extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      title: ''
+      title: props.selected || ''
     }
     this.handleSelect = this.handleSelect.bind(this)
   }

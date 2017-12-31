@@ -7,11 +7,11 @@ import {
 } from 'react-bootstrap'
 
 class InputCustom extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       error: null,
-      text: ''
+      text: props.text || ''
     }
     this.handleInput = this.handleInput.bind(this)
   }

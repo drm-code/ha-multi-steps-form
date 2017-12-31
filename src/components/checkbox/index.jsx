@@ -5,13 +5,17 @@ import {
 } from 'react-bootstrap'
 
 class CheckboxCustom extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      a1: false,
-      a2: false,
+      a1: props.form.a.indexOf('A1') >= 0 ? true : false,
+      a2: props.form.a.indexOf('A2') >= 0 ? true : false,
     }
     this.handleCheckbox = this.handleCheckbox.bind(this)
+  }
+
+  componentDidUpdate() {
+
   }
 
   render() {
@@ -59,8 +63,12 @@ class CheckboxCustom extends React.Component {
 		} else {
 			a.splice(index, 1)
 		}
-		this.props.changeValueInForm('a', a)
-		this.props.setNextStep(2)
+    if (e.target.checked) {
+      this.props.changeValueInForm('a', a)
+      this.props.setNextStep(2)
+    } else {
+
+    }
 	}
 }
 
