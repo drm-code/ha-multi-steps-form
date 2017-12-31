@@ -2,7 +2,8 @@ import React from 'react'
 import {
 	Row,
 	Col,
-	Alert
+	Alert,
+	Well
 } from 'react-bootstrap'
 
 import * as api from '../../api/api'
@@ -31,6 +32,9 @@ export default class Main extends React.Component {
 	render() {
 		return (
 			<Col className="container">
+				<Well>
+					<h5 className="text-center">Powered by: <strong>Yonathan Pineda</strong></h5>
+				</Well>
 				<Row>
 					<Col
 						md={4}
