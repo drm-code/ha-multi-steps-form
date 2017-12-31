@@ -2,7 +2,7 @@ import React from 'react'
 import {
 	Row,
 	Col,
-	Button,
+	Alert
 } from 'react-bootstrap'
 
 import * as api from '../../api/api'
@@ -11,16 +11,21 @@ import CheckboxCustom from '../checkbox'
 import ToggleCustom from '../toggle'
 import InputCustom from '../input'
 import DropdownCustom from '../dropdown'
+import SubmitCustom from '../submit'
 
 export default class Main extends React.Component {
 	constructor() {
 		super()
 		this.state = {
 			inputError: null,
-			selectTitle: ''
+			selectTitle: '',
+			error: null,
+			errorType: '',
+			errorMessage: ''
 		}
 		this.checkInput = this.checkInput.bind(this)
 		this.sendData = this.sendData.bind(this)
+		this.clearAlert = this.clearAlert.bind(this)
 	}
 
 	render() {
@@ -28,15 +33,18 @@ export default class Main extends React.Component {
 			<Col className="container">
 				<Row>
 					<Col
-						md={6}
-						mdOffset={3}
+						md={4}
+						mdOffset={4}
 					>
 						<ProgressCustom
 							step={this.props.step}
 							setNextStep={this.props.setNextStep}
 						/>
 						<Row>
-							<Col xs={12}>
+							<Col
+								xs={12}
+								className="step"
+							>
 								{this.props.step === 1 &&
 									<CheckboxCustom
 										changeValueInForm={this.props.changeValueInForm}
@@ -56,6 +64,7 @@ export default class Main extends React.Component {
 										checkInput={this.checkInput}
 										error={this.state.inputError}
 										text={this.props.form.text}
+										clearAlert={this.clearAlert}
 									/>
 								}
 								{this.props.step === 4 &&
@@ -66,17 +75,30 @@ export default class Main extends React.Component {
 									/>
 								}
 								{this.props.step === 5 &&
-									<Button
-										bsSize="large"
-										onClick={this.sendData}
-									>
-										Submit data
-									</Button>
+									<SubmitCustom
+										form={this.props.form}
+										sendData={this.sendData}
+									/>
 								}
 							</Col>
 						</Row>
 					</Col>
 				</Row>
+				{this.state.error &&
+					<Row>
+						<Col
+							md={4}
+							mdOffset={4}
+							>
+								<Alert
+									bsStyle={this.state.errorType}
+									onDismiss={this.clearAlert}
+								>
+									{this.state.errorMessage}
+								</Alert>
+						</Col>
+					</Row>
+				}
 			</Col>
 		)
 	}
@@ -87,16 +109,37 @@ export default class Main extends React.Component {
 				this.props.changeValueInForm('text', text)
 				this.props.setNextStep(4)
 			}, (error) => {
-				this.setState({ inputError: 'error' })
+				this.setState({
+					inputError: 'error',
+					error: true,
+					errorType: 'danger',
+					errorMessage: 'Please type a text that starts with \'@\''
+				})
 			})
 	}
 
 	sendData() {
 		api.submitIt(this.props.form)
 			.then((data) => {
-				console.log(data)
+				this.setState({
+					error: true,
+					errorType: 'success',
+					errorMessage: 'Data was successufully submitted'
+				})
 			}, (error) => {
-				console.log(error);
+				this.setState({
+					error: true,
+					errorType: 'danger',
+					errorMessage: 'An error occured, please try again!'
+				})
 			})
 	}
+
+	clearAlert() {
+		this.setState({
+			error: false,
+			inputError: null
+		})
+	}
+
 }

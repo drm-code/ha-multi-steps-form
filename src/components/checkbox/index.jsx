@@ -14,10 +14,6 @@ class CheckboxCustom extends React.Component {
     this.handleCheckbox = this.handleCheckbox.bind(this)
   }
 
-  componentDidUpdate() {
-
-  }
-
   render() {
     return (
       <FormGroup>
@@ -66,8 +62,6 @@ class CheckboxCustom extends React.Component {
     if (e.target.checked) {
       this.props.changeValueInForm('a', a)
       this.props.setNextStep(2)
-    } else {
-
     }
 	}
 }

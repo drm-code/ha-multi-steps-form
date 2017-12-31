@@ -1,0 +1,34 @@
+.step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.cursor {
+  cursor: pointer;
+  display: block;
+  padding: 10px 0px;
+}
+
+.disabled {
+  color: #bdbdbd;
+}
+
+.disabled:hover {
+  color: #bdbdbd;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+.alert {
+  margin-top: 15px;
+}
+
+.align-left {
+  text-align: left
+}

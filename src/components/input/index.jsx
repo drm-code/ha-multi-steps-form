@@ -3,7 +3,7 @@ import {
   Form,
   FormGroup,
   FormControl,
-  Button
+  Button,
 } from 'react-bootstrap'
 
 class InputCustom extends React.Component {
@@ -14,6 +14,7 @@ class InputCustom extends React.Component {
       text: props.text || ''
     }
     this.handleInput = this.handleInput.bind(this)
+    this.onKeyPress = this.onKeyPress.bind(this)
   }
 
   componentWillReceiveProps(newProps) {
@@ -28,11 +29,19 @@ class InputCustom extends React.Component {
             type="text"
             value={this.state.text}
             onChange={this.handleInput}
-            placeholder="Type a value that starts with '@'"
+            onKeyPress={this.onKeyPress}
+            placeholder="Type some text"
+            maxLength="24"
           />
           <FormControl.Feedback />
         </FormGroup>
-        <Button onClick={() => this.props.checkInput(this.state.text)}>Check</Button>
+        <Button
+          type="button"
+          bsStyle="primary"
+          onClick={() => this.props.checkInput(this.state.text)}
+        >
+          Check
+        </Button>
       </Form>
     )
   }
@@ -43,6 +52,14 @@ class InputCustom extends React.Component {
 			error: null
 		})
 	}
+
+  onKeyPress(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      this.props.checkInput(this.state.text)
+    }
+    this.props.clearAlert()
+  }
 
 }
 
