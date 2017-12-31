@@ -9,7 +9,9 @@ import {
 	ToggleButton,
 	FormControl,
 	Button,
-	Form
+	Form,
+	DropdownButton,
+	MenuItem
 } from 'react-bootstrap'
 
 import * as api from '../../api/api'
@@ -21,12 +23,14 @@ export default class Main extends React.Component {
 			ch1: false,
 			ch2: false,
 			text: '',
-			inputError: null
+			inputError: null,
+			selectTitle: ''
 		}
 		this.handleCheckbox = this.handleCheckbox.bind(this)
 		this.handleRadio = this.handleRadio.bind(this)
 		this.checkInput = this.checkInput.bind(this)
 		this.handleInput = this.handleInput.bind(this)
+		this.handleSelect = this.handleSelect.bind(this)
 	}
 
 	render() {
@@ -101,6 +105,23 @@ export default class Main extends React.Component {
 										<Button onClick={this.checkInput}>Check</Button>
 									</Form>
 								}
+								{this.props.step === 4 &&
+									<DropdownButton
+										id="select"
+										title={this.state.selectTitle}
+										onSelect={this.handleSelect}
+									>
+										<MenuItem eventKey="C1">
+											C1
+										</MenuItem>
+										<MenuItem eventKey="C2">
+											C2
+										</MenuItem>
+										<MenuItem eventKey="C3">
+											C3
+										</MenuItem>
+									</DropdownButton>
+								}
 							</Col>
 						</Row>
 					</Col>
@@ -153,5 +174,10 @@ export default class Main extends React.Component {
 			text: e.target.value,
 			inputError: null
 		})
+	}
+
+	handleSelect(e) {
+		this.setState({ selectTitle: e })
+		this.props.setNextStep(5)
 	}
 }
