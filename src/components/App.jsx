@@ -2,15 +2,22 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Main from './main'
+import * as actions from '../actions'
 
-function App({ step }) {
+function App(props) {
   return (
-    <Main step={step} />
+    <Main {...props} />
   );
 }
 
 const mapStateToProps = ({ progress }) => ({
-	step: progress.toJS().step
+	step: progress.toJS().step,
+	form: progress.toJS().form
 })
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = (dispatch) => ({
+	setNextStep: (step) => dispatch(actions.setNextStep(step)),
+	changeValueInForm: (key, value) => dispatch(actions.changeValueInForm(key, value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
