@@ -6,17 +6,27 @@ import {
 	Checkbox,
 	ButtonToolbar,
  	ToggleButtonGroup,
-	ToggleButton } from 'react-bootstrap'
+	ToggleButton,
+	FormControl,
+	Button,
+	Form
+} from 'react-bootstrap'
+
+import * as api from '../../api/api'
 
 export default class Main extends React.Component {
 	constructor() {
 		super()
 		this.state = {
 			ch1: false,
-			ch2: false
+			ch2: false,
+			text: '',
+			inputError: null
 		}
 		this.handleCheckbox = this.handleCheckbox.bind(this)
 		this.handleRadio = this.handleRadio.bind(this)
+		this.checkInput = this.checkInput.bind(this)
+		this.handleInput = this.handleInput.bind(this)
 	}
 
 	render() {
@@ -46,11 +56,12 @@ export default class Main extends React.Component {
 											A1
 										</Checkbox>
 										<Checkbox
+											inline
 											name="ch2"
 											value="A2"
 											checked={this.state.ch2}
 											onChange={this.handleCheckbox}
-											inline>
+										>
 											A2
 										</Checkbox>
 									</FormGroup>
@@ -63,16 +74,32 @@ export default class Main extends React.Component {
 										>
 											<ToggleButton
 												value="B1"
-												onChange={this.handleRadio}>
+												onChange={this.handleRadio}
+											>
 												B1
 											</ToggleButton>
 											<ToggleButton
 												value="B2"
-												onChange={this.handleRadio}>
+												onChange={this.handleRadio}
+											>
 												B2
 											</ToggleButton>
 										</ToggleButtonGroup>
 									</ButtonToolbar>
+								}
+								{this.props.step === 3 &&
+									<Form inline>
+										<FormGroup validationState={this.state.inputError}>
+											<FormControl
+												type="text"
+												value={this.state.text}
+												onChange={this.handleInput}
+												placeholder="Type a value that starts with '@'"
+											/>
+											<FormControl.Feedback />
+										</FormGroup>
+										<Button onClick={this.checkInput}>Check</Button>
+									</Form>
 								}
 							</Col>
 						</Row>
@@ -109,5 +136,22 @@ export default class Main extends React.Component {
 	handleRadio(e) {
 		this.props.changeValueInForm('b', e.target.value)
 		this.props.setNextStep(3)
+	}
+
+	checkInput() {
+		api.checkIt(this.state.text)
+			.then(() => {
+				this.props.changeValueInForm('text', this.state.text)
+				this.props.setNextStep(4)
+			}, (error) => {
+				this.setState({ inputError: 'error' })
+			})
+	}
+
+	handleInput(e) {
+		this.setState({
+			text: e.target.value,
+			inputError: null
+		})
 	}
 }
